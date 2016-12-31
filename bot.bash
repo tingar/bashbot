@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
 if [ ! -f config ] ; then
-	echo 'irc.freenode.com 6697 bashbot #bashbot-test' >config
+	cat >config <<-EOF
+    IRCD=irc.freenode.com
+    IRCPORT=6697
+    BOTNAME=bashbot
+    IRCCHANNEL=#bashbot-test
+EOF
 fi
 
-read IRCD IRCPORT BOTNAME IRCCHANNEL IRCPW <config
+source config
 
 LOGFILE=bot.log
 
@@ -23,6 +28,9 @@ tail -f botfile | $NETCAT | while true ; do
 		echo "NICK ${BOTNAME}" >> botfile
 		echo "MODE +B" >> botfile
 		echo "JOIN ${IRCCHANNEL} ${IRCPW}" >> botfile
+    if [[ "${AUTOCMD}" ]] ; then
+      echo "${AUTOCMD}" >> botfile
+    fi
 		started="yes"
 	fi
 	read irc
