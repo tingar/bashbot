@@ -13,7 +13,7 @@ started=""
 test -e botfile && rm botfile
 mkfifo botfile || exit 2 
 
-NETCAT="socat - OPENSSL:$IRCD:$IRCPORT,cipher=ALL:-LOW:@STRENGTH,method=TLSv1,verify=0"
+NETCAT="socat - OPENSSL:$IRCD:$IRCPORT,cipher=ALL:-LOW:@STRENGTH,method=TLS1.2,verify=0"
 #NETCAT="nc $IRCD $IRCPORT"
 
 tail -f botfile | $NETCAT | while true ; do
